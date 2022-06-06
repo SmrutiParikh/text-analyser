@@ -28,6 +28,7 @@ public class DictionaryDTO {
     @NotNull(groups = {ValidationGroup.CreateObjectValidationGroup.class}, message = "entries field is missing")
     private List<String> entries;
 
+    @Builder.Default
     @JsonProperty("is_deleted")
     private boolean isDeleted = false;
 }

@@ -47,6 +47,7 @@ abstract class ApiSubError {
 }
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 @AllArgsConstructor
 class ApiValidationError extends ApiSubError {
     private String object;

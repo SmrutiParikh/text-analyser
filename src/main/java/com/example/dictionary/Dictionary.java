@@ -53,6 +53,6 @@ public class Dictionary {
     private PositionDTO getPosition(String target, String entry) {
         Pattern pattern = Pattern.compile(entry, this.isCaseSensitive ? 0: Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(target);
-        return matcher.find() ? new PositionDTO(matcher.start(), matcher.end() - 1) : null;
+        return matcher.find() ? new PositionDTO(matcher.group(), matcher.start(), matcher.end() - 1) : null;
     }
 }
