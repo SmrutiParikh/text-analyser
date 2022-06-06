@@ -8,7 +8,7 @@
 ## How to run?
 1. Clone project
 	````
-	git clone https://github.com/SmrutiParikh/text-analyser.git
+	git clone [https://github.com/SmrutiParikh/text-analyser.git](https://github.com/SmrutiParikh/text-analyser.git)
 	````
 2. Build project
 	````
