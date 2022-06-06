@@ -1,8 +1,7 @@
 package com.example.dictionary;
 
 import com.amirkhawaja.Ksuid;
-import com.example.core.PositionDTO;
-import com.example.exception.RecordNotFoundException;
+import com.example.core.exception.RecordNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +14,12 @@ import java.util.*;
 public class DictionaryService {
     Map<String, Dictionary> dictionaries = new HashMap<>();
 
-    public Dictionary create(Dictionary newRecord) throws IOException {
-        newRecord.setId(new Ksuid().generate());
+    public Dictionary create(Dictionary newRecord) {
+        try {
+            newRecord.setId(new Ksuid().generate());
+        } catch (IOException e) {
+            newRecord.setId(String.valueOf(new Random().nextInt()));
+        }
         return save(newRecord);
     }
 
@@ -26,9 +29,9 @@ public class DictionaryService {
         return save(oldRecord);
     }
 
-    public List<String> read(String id, PositionDTO position) throws RecordNotFoundException {
+    public List<String> read(String id) throws RecordNotFoundException {
         Dictionary dictionary = findById(id);
-        return dictionary.read(position.getStartIndex(), position.getEndIndex());
+        return dictionary.getEntries();
     }
 
     public Dictionary delete(String id) throws RecordNotFoundException {
@@ -41,7 +44,7 @@ public class DictionaryService {
     }
 
     public Dictionary findById(String id) throws RecordNotFoundException {
-        if (!dictionaries.containsKey(id)) throw new RecordNotFoundException("Dictionary not found for id:" + id);
+        if (!dictionaries.containsKey(id)) throw new RecordNotFoundException("Dictionary not found for id: " + id);
         return dictionaries.get(id);
     }
 

@@ -1,7 +1,8 @@
 package com.example.controller;
 
-import com.example.core.AnalyseQueryDTO;
-import com.example.core.PositionDTO;
+import com.example.core.dto.AnalyseQueryDTO;
+import com.example.core.dto.PositionDTO;
+import com.example.core.exception.RecordNotFoundException;
 import com.example.query.QueryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,15 @@ public class QueryController {
     @Autowired
     private QueryService textAnalyseService;
 
+    /**
+     * @param input (AnalyseQueryDTO)
+     *              requires dictionary id and a target string
+     * @return List<PositionDTO>
+     * list of positions of start and end indices match of entries with target
+     * @throws RecordNotFoundException when unable to find mentioned record
+     */
     @PostMapping("/analyse/text")
-    public List<PositionDTO> analyseText(@RequestBody @Validated AnalyseQueryDTO input) throws Exception {
+    public List<PositionDTO> analyseText(@RequestBody @Validated AnalyseQueryDTO input) throws RecordNotFoundException {
         log.info("Analyse text requested for dictionary id: {}, target: {}", input.getDictionaryId(), input.getTarget());
         List<PositionDTO> result = textAnalyseService.analyseText(input.getDictionaryId(), input.getTarget());
         log.info("Analyse text processed for dictionary id: {}, target: {}", input.getDictionaryId(), input.getTarget());

@@ -1,12 +1,10 @@
 package com.example.controller;
 
-import com.example.core.DictionaryDTO;
+import com.example.core.ValidationGroup;
+import com.example.core.dto.DictionaryDTO;
+import com.example.core.exception.RecordNotFoundException;
 import com.example.dictionary.Dictionary;
 import com.example.dictionary.DictionaryService;
-import com.example.exception.RecordNotFoundException;
-import com.example.validations.CreateObjectValidationGroup;
-import com.example.validations.IdObjectValidationGroup;
-import com.example.validations.RetrieveObjectValidationGroup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +12,11 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
 @RestController
+@RequestMapping("/dictionaries")
 @Slf4j(topic = "DICTIONARY_CONTROLLER")
 @PropertySource("classpath:application.properties")
 public class DictionaryController {
@@ -29,36 +27,68 @@ public class DictionaryController {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @PostMapping("/dictionary/create")
-    public DictionaryDTO create(@RequestBody @Validated(CreateObjectValidationGroup.class) DictionaryDTO input) throws IOException {
+    /**
+     * @param input (DictionaryDTO)
+     *              requires a pojo for new dictionary
+     * @return (DictionaryDTO)
+     * dictionary pojo with id
+     */
+    @PostMapping("/create")
+    public DictionaryDTO create(@RequestBody @Validated(ValidationGroup.CreateObjectValidationGroup.class) DictionaryDTO input) {
         log.info("Create dictionary requested");
         Dictionary dictionary = service.create(convertToVO(input));
         log.info("Create dictionary processed for id: {}", dictionary.getId());
         return convertToDTO(dictionary);
     }
 
-    @PutMapping("/dictionary/update")
-    public DictionaryDTO update(@RequestBody @Validated(IdObjectValidationGroup.class) DictionaryDTO input) throws RecordNotFoundException {
+    /**
+     * @param input (DictionaryDTO)
+     *              requires a pojo for updating dictionary
+     * @return (DictionaryDTO)
+     * updated dictionary pojo
+     * @throws RecordNotFoundException when unable to find mentioned record
+     */
+    @PutMapping("/update")
+    public DictionaryDTO update(@RequestBody @Validated(ValidationGroup.IdObjectValidationGroup.class) DictionaryDTO input) throws RecordNotFoundException {
         log.info("Update dictionary requested for id : {}", input.getId());
         Dictionary dictionary = service.update(convertToVO(input));
         log.info("Update dictionary processed for id: {}", dictionary.getId());
         return convertToDTO(dictionary);
     }
 
-    @PostMapping("/dictionary/read")
-    public List<String> read(@RequestBody @Validated(RetrieveObjectValidationGroup.class) DictionaryDTO input) throws RecordNotFoundException {
-        return service.read(input.getId(), input.getPosition());
+    /**
+     * @param input (DictionaryDTO)
+     *              required id of dictionary
+     * @return (List < String >)
+     * list of entries in dictionary
+     * @throws RecordNotFoundException when unable to find mentioned record
+     */
+    @PostMapping(value = "/read")
+    public List<String> read(@RequestBody @Validated(ValidationGroup.IdObjectValidationGroup.class) DictionaryDTO input) throws RecordNotFoundException {
+        return service.read(input.getId());
     }
 
-    @DeleteMapping("/dictionary/delete")
-    public DictionaryDTO delete(@RequestBody @Validated(IdObjectValidationGroup.class) DictionaryDTO input) throws RecordNotFoundException {
+    /**
+     * @param input (DictionaryDTO)
+     *              required id of dictionary
+     * @return (DictionaryDTO)
+     * deleted object
+     * @throws RecordNotFoundException when unable to find mentioned record
+     */
+    @DeleteMapping("/delete")
+    public DictionaryDTO delete(@RequestBody @Validated(ValidationGroup.IdObjectValidationGroup.class) DictionaryDTO input) throws RecordNotFoundException {
         log.info("Delete dictionary requested for id : {}", input.getId());
-        Dictionary dictionary = service.delete(input.getId());
+        DictionaryDTO dictionaryDTO = convertToDTO(service.delete(input.getId()));
+        dictionaryDTO.setDeleted(true);
         log.info("Delete dictionary processed for id : {}", input.getId());
-        return convertToDTO(dictionary);
+        return dictionaryDTO;
     }
 
-    @GetMapping("/dictionary/list")
+    /**
+     * @return (Set < String >)
+     * lists ids of all dictionaries
+     */
+    @GetMapping("/list")
     public Set<String> list() {
         return service.list();
     }

@@ -1,6 +1,7 @@
 package com.example.query;
 
-import com.example.core.PositionDTO;
+import com.example.core.dto.PositionDTO;
+import com.example.core.exception.RecordNotFoundException;
 import com.example.dictionary.Dictionary;
 import com.example.dictionary.DictionaryService;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,7 @@ public class QueryService {
     @Autowired
     private DictionaryService dictionaryService;
 
-    public List<PositionDTO> analyseText(String dictionaryId, String target) throws Exception {
+    public List<PositionDTO> analyseText(String dictionaryId, String target) throws RecordNotFoundException {
         Dictionary dictionary = dictionaryService.findById(dictionaryId);
         return dictionary.analyseText(target);
     }
