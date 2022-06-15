@@ -1,4 +1,4 @@
-package com.example.core.exception;
+package com.example.exception;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;

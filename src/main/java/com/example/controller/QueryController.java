@@ -1,9 +1,9 @@
 package com.example.controller;
 
-import com.example.core.dto.AnalyseQueryDTO;
-import com.example.core.dto.PositionDTO;
-import com.example.core.exception.RecordNotFoundException;
-import com.example.query.QueryService;
+import com.example.model.AnalyseQueryDTO;
+import com.example.model.PositionDTO;
+import com.example.exception.RecordNotFoundException;
+import com.example.service.QueryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;

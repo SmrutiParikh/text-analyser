@@ -1,4 +1,4 @@
-package com.example.core.exception;
+package com.example.exception;
 
 public enum ErrorCode {
     INVALID_HEADERS,

@@ -1,4 +1,4 @@
-package com.example.core.exception;
+package com.example.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;

@@ -1,9 +1,8 @@
-package com.example.query;
+package com.example.service;
 
-import com.example.core.dto.PositionDTO;
-import com.example.core.exception.RecordNotFoundException;
-import com.example.dictionary.Dictionary;
-import com.example.dictionary.DictionaryService;
+import com.example.model.DictionaryDTO;
+import com.example.model.PositionDTO;
+import com.example.exception.RecordNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ public class QueryService {
     private DictionaryService dictionaryService;
 
     public List<PositionDTO> analyseText(String dictionaryId, String target) throws RecordNotFoundException {
-        Dictionary dictionary = dictionaryService.findById(dictionaryId);
+        DictionaryDTO dictionary = dictionaryService.findById(dictionaryId);
         return dictionary.analyseText(target);
     }
 }

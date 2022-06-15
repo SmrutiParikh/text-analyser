@@ -1,10 +1,9 @@
 package com.example.controller;
 
-import com.example.core.ValidationGroup;
-import com.example.core.dto.DictionaryDTO;
-import com.example.core.exception.RecordNotFoundException;
-import com.example.dictionary.Dictionary;
-import com.example.dictionary.DictionaryService;
+import com.example.utils.ValidationGroup;
+import com.example.model.DictionaryDTO;
+import com.example.exception.RecordNotFoundException;
+import com.example.service.DictionaryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +35,9 @@ public class DictionaryController {
     @PostMapping("/create")
     public DictionaryDTO create(@RequestBody @Validated(ValidationGroup.CreateObjectValidationGroup.class) DictionaryDTO input) {
         log.info("Create dictionary requested");
-        Dictionary dictionary = service.create(convertToVO(input));
+        DictionaryDTO dictionary = service.create(input);
         log.info("Create dictionary processed for id: {}", dictionary.getId());
-        return convertToDTO(dictionary);
+        return dictionary;
     }
 
     /**
@@ -51,9 +50,9 @@ public class DictionaryController {
     @PutMapping("/update")
     public DictionaryDTO update(@RequestBody @Validated(ValidationGroup.IdObjectValidationGroup.class) DictionaryDTO input) throws RecordNotFoundException {
         log.info("Update dictionary requested for id : {}", input.getId());
-        Dictionary dictionary = service.update(convertToVO(input));
+        DictionaryDTO dictionary = service.update(input);
         log.info("Update dictionary processed for id: {}", dictionary.getId());
-        return convertToDTO(dictionary);
+        return dictionary;
     }
 
     /**
@@ -78,7 +77,7 @@ public class DictionaryController {
     @DeleteMapping("/delete")
     public DictionaryDTO delete(@RequestBody @Validated(ValidationGroup.IdObjectValidationGroup.class) DictionaryDTO input) throws RecordNotFoundException {
         log.info("Delete dictionary requested for id : {}", input.getId());
-        DictionaryDTO dictionaryDTO = convertToDTO(service.delete(input.getId()));
+        DictionaryDTO dictionaryDTO = service.delete(input.getId());
         dictionaryDTO.setDeleted(true);
         log.info("Delete dictionary processed for id : {}", input.getId());
         return dictionaryDTO;
@@ -91,13 +90,5 @@ public class DictionaryController {
     @GetMapping("/list")
     public Set<String> list() {
         return service.list();
-    }
-
-    private DictionaryDTO convertToDTO(Dictionary vo) {
-        return objectMapper.convertValue(vo, DictionaryDTO.class);
-    }
-
-    private Dictionary convertToVO(DictionaryDTO dto) {
-        return objectMapper.convertValue(dto, Dictionary.class);
     }
 }

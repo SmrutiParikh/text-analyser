@@ -1,4 +1,4 @@
-package com.example.core;
+package com.example.utils;
 
 public class ValidationGroup {
     public interface CreateObjectValidationGroup {

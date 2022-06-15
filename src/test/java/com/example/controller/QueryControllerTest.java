@@ -1,8 +1,8 @@
 package com.example.controller;
 
-import com.example.core.dto.AnalyseQueryDTO;
-import com.example.core.dto.DictionaryDTO;
-import com.example.core.exception.ErrorCode;
+import com.example.model.AnalyseQueryDTO;
+import com.example.model.DictionaryDTO;
+import com.example.exception.ErrorCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;

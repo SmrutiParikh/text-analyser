@@ -1,7 +1,7 @@
 package com.example.controller;
 
-import com.example.core.dto.DictionaryDTO;
-import com.example.core.exception.ErrorCode;
+import com.example.model.DictionaryDTO;
+import com.example.exception.ErrorCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -371,7 +371,7 @@ public class DictionaryControllerTest {
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .accept(MediaType.APPLICATION_JSON)
                     ).andExpect(status().isOk())
-                    .andExpect(jsonPath("$", hasSize(1)))
+                        .andExpect(jsonPath("$", hasSize(1)))
                     .andExpect(jsonPath("$[0]", is(dictionaryDTO.getId())));
 
         } catch (Exception e) {
